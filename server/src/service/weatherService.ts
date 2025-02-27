@@ -33,6 +33,7 @@ class WeatherService {
     }
     return Response.json();
    }
+   console.log('So far so good');
   // TODO: Create destructureLocationData method
    private destructureLocationData(locationData: Coordinates): Coordinates {
   return {
@@ -42,7 +43,7 @@ class WeatherService {
 }
    // TODO: Create buildGeocodeQuery method
    private buildGeocodeQuery(): string {
-    return `${this.baseURL}/weather?q=${city}&appid=${this.API_KEY}`;
+    return `${this.baseURL}/weather?q=${Weather.city}&appid=${this.API_KEY}`;
    }
   // TODO: Create buildWeatherQuery method
    private buildWeatherQuery(coordinates: Coordinates): string {
