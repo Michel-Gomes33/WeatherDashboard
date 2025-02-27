@@ -1,4 +1,7 @@
 import { Router, type Request, type Response } from 'express';
+import historyService from '../../service/historyService';
+import weatherService from '../../service/weatherService';
+
 const router = Router();
 
 // import HistoryService from '../../service/historyService.js';
