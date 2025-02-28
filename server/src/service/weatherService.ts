@@ -19,10 +19,10 @@ class Weather {
 // TODO: Complete the WeatherService class
 class WeatherService {
   // TODO: Define the baseURL, API key, and city name properties
- private baseURL: string;
- API_KEY: string;
+  private baseURL: string;
+  API_KEY: string;
   constructor () {
-  this.baseURL = baseURL('https://openweathermap.org/forecast5');
+  this.baseURL = ('https://openweathermap.org/forecast5');
   this.API_KEY = process.env.OPENWEATHER_API_KEY || '';
  }
   // TODO: Create fetchLocationData method
