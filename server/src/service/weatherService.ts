@@ -131,7 +131,7 @@ class WeatherService {
     return weatherArray
   }
   // TODO: Complete getWeatherForCity method
-  async getWeatherForCity(city: string) {
+  async getWeatherForCity() {
     try {
       const locationData = await this.fetchAndDestructureLocationData()
       const combinedWeatherData = await this.fetchWeatherData(locationData)
@@ -150,4 +150,4 @@ class WeatherService {
   }
 }
 
-export default new WeatherService("New York");
+export default  WeatherService;
