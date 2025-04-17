@@ -6,10 +6,8 @@ class City {
   name: string;
   id: string;
 
-  constructor(
-    name: string,
-    id: string
-  ) {
+  constructor(name: string) 
+  {
     this.name = name;
     this.id = uuidv4();
   }
