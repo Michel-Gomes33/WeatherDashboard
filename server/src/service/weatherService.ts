@@ -1,4 +1,5 @@
 import dotenv from 'dotenv';
+import dayjs, {type Dayjs} from 'dayjs';
 dotenv.config();
 
 // TODO: Define an interface for the Coordinates object
@@ -67,43 +68,40 @@ class WeatherService {
   }
   // TODO: Create buildGeocodeQuery method
   private buildGeocodeQuery(): string {
-    return `q=${this.cityName}&limit=1&appid=${this.apiKey}`;
+    return `${this.baseURL}/geo/1.0/direct?q=${this.cityName}&limit=1&appid=${this.apiKey}`;
   }
   // TODO: Create buildWeatherQuery method
   private buildWeatherQuery(coordinates: Coordinates): string {
-    return `lat=${coordinates.lat}&lon=${coordinates.lon}&units=imperial&appid=${this.apiKey}`;
+    return `${this.baseURL}/data/2.5/forecast?lat=${coordinates.lat}&lon=${coordinates.lon}&units=imperial&appid=${this.apiKey}`;
   }
   // TODO: Create fetchAndDestructureLocationData method
   private async fetchAndDestructureLocationData() {
-    return this.destructureLocationData(
-      await this.fetchLocationData(this.buildGeocodeQuery())
-    );
+    return await this.fetchLocationData(this.buildGeocodeQuery()).then((data)=> 
+      this.destructureLocationData(data));
   }
   // TODO: Create fetchWeatherData method
   private async fetchWeatherData(coordinates: Coordinates) {
-    const currentWeather = await (
-      await fetch(`https://api.openweathermap.org/data/2.5/weather?${this.buildWeatherQuery(coordinates)}`
-      )
-    ).json();
-    const forecast = await (
-      await fetch(`https://api.openweathermap.org/data/2.5/forecast?${this.buildWeatherQuery(coordinates)}`
-      )
-    ).json();
-    return { currentWeather: currentWeather, forecast: forecast };
+    const currentWeather = 
+      await fetch(this.buildWeatherQuery(coordinates)).then(
+        (res) => res.json());
+
+    if (!currentWeather)
+    {
+      return Error('Current weather not found');
+    } 
+    const weather: Weather = this.parseCurrentWeather(currentWeather.list[0]);
+    const forecast: Weather[] = this.buildForecastArray(weatherArray.list[0])
+    //forecast is the array with 7 days for the whole object
   }
   
   // TODO: Build parseCurrentWeather method
   private parseCurrentWeather(response: any) {
     const current = response;
-    let name;
-    if (this.cityName === `location not found`) {
-      name = `Location not found, here's the north pole instead!`;
-    } else {
-      name = response.name;
-    }
+    const parseDate = dayjs.unix(current.dt).format('MM/DD/YYYY');
+    
     return new Weather(
-      name,
-      `${new Date().toDateString()}`,
+      this.cityName, 
+      parseDate,
       current.weather[0].icon,
       current.weather[0].description,
       current.main.temp,
